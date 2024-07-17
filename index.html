@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Xetroz's Blog</title>
+		<style>
+			.bg
+			{
+				height:100%;
+				width:100%;
+				background:url("./background.jpg") no-repeat fixed;
+				background-size: cover;
+				margin-bottom:0;
+				margin-left:0;
+				margin-right:0;
+				margin-top:8;
+				padding:0;
+			}
+			@font-face {
+				font-family: "Pero W03";
+				src: url("./Pero W03 Regular.ttf");
+			}
+			h4{font-family: Pero W03,YouYuan;}
+			h3{font-family: Pero W03,YouYuan;}
+			h2{font-family: Pero W03,YouYuan;}
+			h1{font-family: Pero W03,YouYuan;}
+			p{font-family: Pero W03,YouYuan;}
+			a{text-decoration: none;color:black;}
+			.daohang
+			{
+				display:flex;
+				border-radius: 30px;
+				margin: 0% auto;
+				width:1500px;
+				height:60px;
+				background-color:rgba(255, 255, 255,0.7);
+			}
+			.zhengwen
+			{
+				margin: 0% auto;
+				width:1500px;
+				height:300px;
+			}
+			.cen{text-align:center;}
+			.left
+			{
+				justify-content:flex-start;
+				display:flex;
+				align-items:center;
+			}
+			.right
+			{
+				flex:0.95;
+				justify-content:flex-end;
+				display:flex;
+				align-items:center;
+			}
+		</style>
+		<script>
+			function time() {
+				var element = new Date().toLocaleTimeString();
+				document.getElementById('timex').innerHTML = element;
+			}
+			setInterval(time, 100);
+		</script>
+	</head>
+	<body class="bg">
+		<div class="daohang">
+			<a href=".">
+				<h2 style="text-indent: 3em;" class="left">Xetroz's Blog</h2>
+			</a>
+			<h2 id="timex" class="right"></h2>
+		</div>
+		<br>
+		<div class="zhengwen" style="background-color:rgba(255, 255, 255,0.7);border-radius: 30px;">
+			<br>
+			<p style="text-indent:2em;font-size:30px">文章列表</p>
+			<a href="1"><p style="text-indent:4em;color:blue;font-size:25px">My first blog!!!</p></a>
+		</div>
+	</body>
+</html>
