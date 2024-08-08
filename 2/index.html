@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Xetroz's Blog</title>
+		<style>
+			.bg
+			{
+				height:100%;
+				width:100%;
+				background:url("../background.jpg") no-repeat fixed;
+				background-size: cover;
+				margin-bottom:0;
+				margin-left:0;
+				margin-right:0;
+				margin-top:8;
+				padding:0;
+			}
+			@font-face {
+				font-family: "Pero W03";
+				src: url("../Pero W03 Regular.ttf");
+			}
+			h4{font-family: Pero W03,YouYuan;}
+			h3{font-family: Pero W03,YouYuan;}
+			h2{font-family: Pero W03,YouYuan;}
+			h1{font-family: Pero W03,YouYuan;}
+			p{font-family: Pero W03,YouYuan;}
+			a{text-decoration: none;color:black;}
+			.daohang
+			{
+				display:flex;
+				border-radius: 30px;
+				margin: 0% auto;
+				width:1500px;
+				height:60px;
+				background-color:rgba(255, 255, 255,0.7);
+			}
+			.zhengwen
+			{
+				margin: 0% auto;
+				width:1500px;
+			}
+			.cen{text-align:center;}
+			.left
+			{
+				justify-content:flex-start;
+				display:flex;
+				align-items:center;
+			}
+			.right
+			{
+				flex:0.95;
+				justify-content:flex-end;
+				display:flex;
+				align-items:center;
+			}
+			.nor{font-size:20px;margin:2em;text-indent:2em;}
+		</style>
+		<script>
+			function time() {
+				var element = new Date().toLocaleTimeString();
+				document.getElementById('timex').innerHTML = element;
+			}
+			setInterval(time, 100);
+		</script>
+	</head>
+	<body class="bg">
+		<div class="daohang">
+			<a href="..">
+				<h2 style="text-indent: 3em;" class="left">Xetroz's Blog</h2>
+			</a>
+			<h2 id="timex" class="right"></h2>
+		</div>
+		<br>
+		<div class="zhengwen" style="background-color:rgba(255, 255, 255,0.7);border-radius: 30px;">
+			<br>
+			<p style="text-align:center;font-size:50px">ACF：配套Cena使用的不二之选</p>
+			<h3 style="text-align:center;">2024/8/8 16:47</h3>
+			<br>
+			<div class="nor">
+				<h2>前排提示：本程序仅适用于Cena评测机，下载可以到<a style="color:blue;" href="https://pan.baidu.com/s/1x_eBapdR1iEyeA74-1SyLg">点我</a>下载</h2>
+				<p>ACF（AutoCreateFiles）由C++编写，运行该文件，程序将会创建一个以选手姓名（自行输入）为文件夹名的文件夹，之后会创建n个子目录（每个子目录的名字自行输入），每个目录包含.in/.out/.cpp文件，其中.cpp文件自动生成框架。</p>
+				<h2>注意：要把文件放到你想在哪生成文件的目录上！</h2>
+				<p>如，输入选手姓名为Juruo_Xetroz，一共3道题，分别是q1，q2，q3：</p>
+				<img src="../files/pictures/2-1.PNG">
+				<p>运行完过后，打开子目录Juruo_Xetroz，应该有3个文件夹，文件夹名分别为q1，q2，q3：</p>
+				<img src="../files/pictures/2-2.PNG">
+				<p>打开q1文件夹，有三个文件，分别为q1.cpp，q1.in，q1.out：</p>
+				<img src="../files/pictures/2-3.PNG">
+				<p>其中，q1.in和q1.out为空文件，q1.cpp如下图所示：</p>
+				<img src="../files/pictures/2-4.PNG">
+				<p>其余q2和q3与q1一致</p>
+				<p>下载链接：<a href="../files/download/ACF v1.2 By Xetroz.cpp" style="color:red">点我</a></p>
+				<p>ByeBye！</p>
+			</div>
+			<br>
+		</div>
+	</body>
+</html>
