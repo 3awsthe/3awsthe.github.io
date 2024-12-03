@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<title>撸草公司</title>
 		<script>
-			var a=500,auto=0,upg=1,autoneed=20,autofuncdo=0,upgrasslvneed=100;
+			var a=0,auto=0,upg=1,autoneed=20,autofuncdo=0,upgrasslvneed=100;
 			var autog=0,lv=1;
 			
 			function getgrass()
@@ -29,7 +29,7 @@
 					document.getElementById("grass").innerHTML="草："+a+" 株";
 					document.getElementById("cd").innerHTML="草地等级："+lv+" 级";
 					document.getElementById("budong").innerHTML="可以获得 "+lv+" 株草";
-					document.getElementById("grasslvtip").innerHTML="升级一次草地，每次点击获得的草数加 1，消耗 "+upgrasslvneed+" 株草购买";
+					document.getElementById("grasslvtip").innerHTML="升级一次草地，每次点击获得的草数加 1，消耗 "+upgrasslvneed+" 株草购买。";
 					document.getElementById("autotip").innerHTML="每秒产出 "+lv+" 株草，消耗 "+autoneed+" 株草购买。";
 					document.getElementById("tip").innerHTML="升级成功";
 				}
@@ -67,6 +67,10 @@
 			document.getElementById("cd").innerHTML="草地等级：1 级";
 			document.getElementById("autoge").innerHTML="自动点击装置：0 个";
 		</script>
+		<div style="width:1250px;height:70px;text-align: center;float: inline-start;">
+			<p>Made By PriorityStack</p>
+		</div>
+		<br>
 		<div style="width:250px;height:70px;text-align: center;float:left;">
 			<abbr title="可爱的小草们你们好啊，我是奶龙。"><button onclick="getgrass()" style="height:50px;width:100px;">撸撸草</button></abbr>
 			<p id="budong">可以获得 1 株草。</p>
