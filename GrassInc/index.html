@@ -4,13 +4,30 @@
 		<meta charset="utf-8">
 		<title>撸草公司</title>
 		<script>
-			var a=0,auto=0,upg=1,autoneed=20,autofuncdo=0,upgrasslvneed=100;
-			var autog=0,lv=1;
-			
+			var a=0,auto=0,autoneed=20,autofuncdo=0,upgrasslvneed=100;
+			var autog=0,lv=1,wood=0;
+			//localStorage.setItem("grassg","0");
+			if(localStorage.getItem("grassg")==="undefined")localStorage.setItem("grassg","0");
+			else a=parseInt(localStorage.getItem("grassg"));
+			if(localStorage.getItem("grasslv")==="undefined")localStorage.setItem("grasslv","1");
+			else lv=parseInt(localStorage.getItem("grasslv"));
+			if(localStorage.getItem("upgrasslvneed")==="undefined")localStorage.setItem("upgrasslvneed","100");
+			else upgrasslvneed=parseInt(localStorage.getItem("upgrasslvneed"));
+			if(localStorage.getItem("autog")==="undefined")localStorage.setItem("autog","0");
+			else autog=parseInt(localStorage.getItem("autog"));
+			if(localStorage.getItem("auto")==="undefined")localStorage.setItem("auto","0");
+			else auto=parseInt(localStorage.getItem("auto"));
+			if(localStorage.getItem("autofuncdo")==="undefined")localStorage.setItem("autofuncdo","0");
+			else autofuncdo=parseInt(localStorage.getItem("autofuncdo"));
+			if(localStorage.getItem("autoneed")==="undefined")localStorage.setItem("autoneed","20");
+			else autoneed=parseInt(localStorage.getItem("autoneed"));
+			if(localStorage.getItem("wood")==="undefined")localStorage.setItem("wood","0");
+			else wood=parseInt(localStorage.getItem("wood"));
 			function getgrass()
 			{
-				a+=upg;
-				document.getElementById("grass").innerHTML="草："+a+"株";
+				a+=lv;
+				document.getElementById("grass").innerHTML="草："+a+" 株";
+				localStorage.setItem("grassg", a.toString());
 			}
 			function upgrade()
 			{
@@ -20,12 +37,15 @@
 				}
 				else
 				{
-					upg+=1;
 					a-=upgrasslvneed;
 					upgrasslvneed*=250;
 					upgrasslvneed=Math.floor(upgrasslvneed/100);
 					auto+=autog;
 					lv++;
+					localStorage.setItem("grasslv", lv.toString());
+					localStorage.setItem("grassg", a.toString());
+					localStorage.setItem("upgrasslvneed", upgrasslvneed.toString());
+					localStorage.setItem("auto", auto.toString());
 					document.getElementById("grass").innerHTML="草："+a+" 株";
 					document.getElementById("cd").innerHTML="草地等级："+lv+" 级";
 					document.getElementById("budong").innerHTML="可以获得 "+lv+" 株草";
@@ -42,46 +62,113 @@
 					a-=autoneed;
 					autoneed*=125;
 					autoneed=Math.floor(autoneed/100);
-					auto+=1;
+					auto+=lv;
 					autog+=1;
+					localStorage.setItem("grassg", a.toString());
+					localStorage.setItem("auto", auto.toString());
+					localStorage.setItem("autog", autog.toString());
+					localStorage.setItem("autoneed", autoneed.toString());
 					document.getElementById("grass").innerHTML="草："+a+" 株";
 					document.getElementById("autoge").innerHTML="自动点击装置："+autog+" 个";
 					document.getElementById("autotip").innerHTML="每秒产出 "+lv+" 株草，消耗 "+autoneed+" 株草购买。";
-					if(autofuncdo===0)autoget();
+					if(autofuncdo===0){autofuncdo=1;autoget();}
 				}
 			}
-			function autoget(){autofuncdo=1;a+=auto; setTimeout("autoget()",1000); document.getElementById("grass").innerHTML="草："+a+" 株";}
+			function autoget()
+			{
+				if(autofuncdo===0)autofuncdo=0;
+				else {
+					autofuncdo=1;
+					localStorage.setItem("autofuncdo", autofuncdo.toString());
+					a+=auto;localStorage.setItem("grassg", a.toString());
+					document.getElementById("grass").innerHTML=("草："+a+" 株");
+					setTimeout(`autoget()`,1000)
+				}
+			}
+			function grass_to_wood()
+			{
+				if(a<100)
+				{
+					document.getElementById("tip").innerHTML="至少需要 100 株草可以购买 1 根木头。"
+				}
+				else
+				{
+					wood+=1;
+					a-=100;
+					localStorage.setItem("grassg", a.toString());
+					localStorage.setItem("wood", wood.toString());
+					document.getElementById("wood").innerHTML="木头："+wood+" 根";
+					document.getElementById("grass").innerHTML="草："+a+" 株";
+				}
+			}
+			function deletestorage()
+			{
+				localStorage.setItem("grassg","0");
+				localStorage.setItem("upgrasslvneed","100");
+				localStorage.setItem("autog","0");
+				localStorage.setItem("grasslv","1");
+				localStorage.setItem("auto","0");
+				localStorage.setItem("autofuncdo","0");
+				localStorage.setItem("autoneed","20");
+				localStorage.setItem("wood","0");
+				a=0,auto=0,autoneed=20,autofuncdo=0,upgrasslvneed=100;
+				autog=0,lv=1,wood=0;
+				document.getElementById("grass").innerHTML="草："+a+" 株";
+				document.getElementById("cd").innerHTML="草地等级："+lv+" 级";
+				document.getElementById("budong").innerHTML="可以获得 "+lv+" 株草";
+				document.getElementById("grasslvtip").innerHTML="升级一次草地，每次点击获得的草数加 1，消耗 "+upgrasslvneed+" 株草购买。";
+				document.getElementById("autotip").innerHTML="每秒产出 "+lv+" 株草，消耗 "+autoneed+" 株草购买。";
+				document.getElementById("autoge").innerHTML="自动点击装置："+autog+" 个";
+			}
+			function inita(){
+				document.getElementById("grass").innerHTML="草："+a+" 株";
+				document.getElementById("cd").innerHTML="草地等级："+lv+" 级";
+				document.getElementById("autoge").innerHTML="自动点击装置："+autog+" 个";
+				document.getElementById("budong").innerHTML="可以获得 "+lv+" 株草";
+				document.getElementById("grasslvtip").innerHTML="升级一次草地，每次点击获得的草数加 1，消耗 "+upgrasslvneed+" 株草购买。";
+				document.getElementById("autotip").innerHTML="每秒产出 "+lv+" 株草，消耗 "+autoneed+" 株草购买。";
+				if(wood>=1)document.getElementById("wood").innerHTML="木头："+wood+" 根";
+			}
 		</script>
 	</head>
 	<body>
 		<div style="width:200px;height:500px;float:left;background-color: lightgray;">
 			<p id="grass"></p>
+			<p id="wood"></p>
 			<p id="tip"></p>
 		</div>
 		<div style="width:200px;height:500px;float:right;background-color: lightgray;">
 			<p id="cd"></p>
 			<p id="autoge"></p>
 		</div>
-		<script>
-			document.getElementById("grass").innerHTML="草："+a+" 株";
-			document.getElementById("cd").innerHTML="草地等级：1 级";
-			document.getElementById("autoge").innerHTML="自动点击装置：0 个";
-		</script>
-		<div style="width:1250px;height:70px;text-align: center;float: inline-start;">
+		<script>if(autofuncdo===1)autoget();</script>
+		<div style="width:1250px;height:120px;margin:auto;text-align: center;float: inline-start;">
 			<p>Made By PriorityStack</p>
+			<p>第一次游玩请先点击“删档”，否则所有数据会错乱。</p>
+		</div>
+		<br>
+		<div style="width:1250px;height:70px;margin:auto;text-align: center;float: inline-start;">
+			<button onclick="deletestorage()" style="height:50px;width:100px;">删档</button>
 		</div>
 		<br>
 		<div style="width:250px;height:70px;text-align: center;float:left;">
 			<abbr title="可爱的小草们你们好啊，我是奶龙。"><button onclick="getgrass()" style="height:50px;width:100px;">撸撸草</button></abbr>
-			<p id="budong">可以获得 1 株草。</p>
+			<p id="budong"></p>
 		</div>
 		<div style="width:250px;height:70px;text-align: center;float:left;">
 		<abbr title="升级才是硬道理！"><button onclick="upgrade()" style="height:50px;width:100px;">升级草地</button></abbr>
-			<p id="grasslvtip">升级一次草地，每次点击获得的草数加 1，消耗 100 株草购买。</p>
+			<p id="grasslvtip"></p>
 		</div>
 		<div style="width:250px;height:70px;text-align: center;float:left;">
 			<abbr title="Automaton!!!!!!!!"><button onclick="init_auto()" style="height:50px;width:100px;">自动装置</button></abbr>
 			<p id="autotip">每秒产出 1 株草，消耗 20 株草购买。</p>
 		</div>
+		<div style="width:250px;height:70px;text-align: center;float:left;">
+			<abbr title="从大自然中获得的木头"><button onclick="grass_to_wood()" style="height:50px;width:100px;">获取木头</button></abbr>
+			<p id="autotip">消耗 100 株草购买 1 根木头。</p>
+		</div>
+		<script>
+			inita();
+		</script>
 	</body>
 </html>
