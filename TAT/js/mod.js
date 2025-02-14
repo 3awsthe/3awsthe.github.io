@@ -42,9 +42,20 @@ function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
 	let gain=new Decimal(1)
+	if(inChallenge("A",22))
+	{
+		if(hasChallenge("A",11))gain=gain.mul(10)
+		if(hasChallenge("A",12))gain=gain.mul(3)
+		if(player.AP.points.gte(1))
+		{gain=gain.mul(player.AP.points.mul(3).pow(0.99))}
+		if(player.B.points.gte(1))gain=gain.mul(player.B.points.mul(3).pow(0.99))
+		if(hasChallenge("A",21))gain=gain.pow(1.25)
+		if(hasChallenge("A",22))gain=gain.mul(1.25)
+		return gain
+	}
 	if(hasUpgrade("A",11))
 	{
-		if(inChallenge("A",11)||inChallenge("A",12)||inChallenge("A",13))gain=gain.mul(2)
+		if(inChallenge("A",11)||inChallenge("A",12)||inChallenge("A",21))gain=gain.mul(2)
 		else if(hasUpgrade("A",41))gain=gain.mul(2500)
 		else if(hasUpgrade("A",32))gain=gain.mul(500)
 		else if(hasUpgrade("A",22))gain=gain.mul(50)
@@ -55,8 +66,6 @@ function getPointGen() {
 	}
 	if(hasUpgrade("A",14))gain=gain.mul(upgradeEffect("A",14))
 	if(hasUpgrade("A",21))gain=gain.mul(upgradeEffect("A",21))
-	if(hasChallenge("A",11))gain=gain.mul(10)
-	if(hasChallenge("A",13))gain=gain.pow(1.25)
 	if(player.AP.points.gte(1))
 	{
 		if(hasUpgrade("A",44))gain=gain.mul(player.AP.points.mul(5).pow(0.99))
@@ -64,6 +73,10 @@ function getPointGen() {
 		else gain=gain.mul(player.AP.points.mul(3).pow(0.99))
 	}
 	if(player.B.points.gte(1))gain=gain.mul(player.B.points.mul(3).pow(0.99))
+	if(hasChallenge("A",21))gain=gain.pow(1.25)
+	if(hasChallenge("A",22))gain=gain.pow(1.25)
+	if(hasMilestone("C",2)){gain=gain.mul(player.C.points.mul(6).pow(0.97));}
+	if(hasMilestone("C",125))gain=gain.pow(1.25)
 	return gain
 }
 

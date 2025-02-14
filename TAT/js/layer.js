@@ -13,7 +13,8 @@ addLayer("A",{
 	baseResource:"字母",
 	baseAmount(){return player.points},
 	resource:"Alpha",
-	exponent:0.6,
+	exponent(){if(hasMilestone("C",75))return 0.5
+	else return 0.6},
 	type:"normal",
 	requires:new Decimal(5),
 	gainMult()
@@ -65,7 +66,8 @@ addLayer("A",{
 			description:"Alpha 增益字母",
 			effect()
 			{
-				if(inChallenge("A",11)||inChallenge("A",12)||inChallenge("A",13))return softcap(player.A.points.add(1).pow(0.3),new Decimal(1000),0.1)
+				if(inChallenge("A",11)||inChallenge("A",12)||inChallenge("A",21))return softcap(player.A.points.add(1).pow(0.3),new Decimal(1000),0.1)
+				if(hasUpgrade("A",46))return softcap(player.A.points.add(1).pow(0.5),new Decimal(1000000),0.05)
 				if(hasUpgrade("A",42))return softcap(player.A.points.add(1).pow(0.5),new Decimal(100000),0.1)
 				if(hasUpgrade("A",34))return softcap(player.A.points.add(1).pow(0.5),new Decimal(10000),0.1)
 				if(hasUpgrade("A",24))return softcap(player.A.points.add(1).pow(0.4),new Decimal(1000),0.1)
@@ -95,7 +97,7 @@ addLayer("A",{
 			tooltip:"A21",
 			description:"字母提升字母",
 			effect(){
-				if(inChallenge("A",11)||inChallenge("A",12)||inChallenge("A",13))return softcap(player.points.add(1).pow(0.125),new Decimal(1000),0.1)
+				if(inChallenge("A",11)||inChallenge("A",12)||inChallenge("A",21))return softcap(player.points.add(1).pow(0.125),new Decimal(1000),0.1)
 				if(hasUpgrade("A",42))return softcap(player.points.add(1).pow(0.35),new Decimal(100000),0.1)
 				if(hasUpgrade("AP",14))return softcap(player.points.add(1).pow(0.35),new Decimal(10000),0.1)
 				if(hasUpgrade("A",35))return softcap(player.points.add(1).pow(0.3),new Decimal(1000),0.1)
@@ -152,6 +154,7 @@ addLayer("A",{
 				if(hasUpgrade("AP",15))return softcap(player.points.add(1).pow(0.2),new Decimal(1000),0.1)
 				return softcap(player.points.add(1).pow(0.15),new Decimal(1000),0.1)
 			},
+			effectDisplay(){return "x"+format(upgradeEffect("A",31))},
 			unlocked(){return hasUpgrade("A",26)&&hasChallenge("A",11)}
 		},
 		32:{
@@ -215,10 +218,25 @@ addLayer("A",{
 			title:"字母力量增强 BETA",
 			description:"增强字母力量对字母的增益效果",
 			tooltip:"A44",
-			cost:new Decimal(60),
+			cost:new Decimal(1e24),
 			unlocked(){return hasUpgrade("A",43)&&hasUpgrade("B",12)}
+		},
+		45:{
+			title:"膨胀器 EPSILON",
+			description:"增强 A11",
+			tooltip:"A45",
+			cost:new Decimal(1e25),
+			unlocked(){return hasUpgrade("A",44)}
+		},
+		46:{
+			title:"回收机 EPSILON",
+			description:"去掉 A14 的一个软上限",
+			tooltip:"A46",
+			cost:new Decimal(1e26),
+			unlocked(){return hasUpgrade("A",45)}
 		}
 	},
+	autoUpgrade(){return hasMilestone("C",75)},
 	challenges:{
 		11:{
 			name:"无法想象失去升级的痛苦",
@@ -233,10 +251,10 @@ addLayer("A",{
 			name:"无法想象失去升级的痛苦 II",
 			tooltip:"AC12",
 			challengeDescription:"所有膨胀、超级膨胀、回收机、更强改善将失效",
-			rewardDescription:"解锁更多 AP 层升级",
+			rewardDescription:"字母增益 x3",
 			canComplete(){return player.points.gte(1000000)},
 			goalDescription:"1,000,000 字母",
-			unlocked(){return (hasUpgrade("A",26)&&hasMilestone("B",2))||hasMilestone("B",20)}
+			unlocked(){return ((hasUpgrade("A",26)&&hasMilestone("B",2))||hasMilestone("B",20))&&hasChallenge("A",11)}
 		},
 		21:{
 			name:"无法想象失去升级的痛苦 III",
@@ -245,7 +263,16 @@ addLayer("A",{
 			rewardDescription:"字母增益 ^1.25",
 			canComplete(){return player.points.gte(2e11)},
 			goalDescription:"2e11 字母",
-			unlocked(){return (hasUpgrade("A",26)&&hasMilestone("B",2))||hasMilestone("B",20)}
+			unlocked(){return ((hasUpgrade("A",26)&&hasMilestone("B",2))||hasMilestone("B",20))&&hasChallenge("A",12)}
+		},
+		22:{
+			name:"丢掉一切，做回自己",
+			tooltip:"AC22",
+			challengeDescription:"所有升级失效",
+			rewardDescription:"字母增益 ^1.25",
+			canComplete(){return player.points.gte(1e11)},
+			goalDescription:"1e11 字母",
+			unlocked(){return ((hasUpgrade("A",26)&&hasMilestone("B",2))||hasMilestone("B",20))&&hasChallenge("A",21)}
 		}
 	},
 	passiveGeneration()
@@ -346,10 +373,21 @@ addLayer("AP",{
 		},
 		21:{
 			title:"可回收利用 BETA",
-			description:"增强 A32",
+			description:"增强 A31",
 			tooltip:"AP21",
 			cost:new Decimal(300),
 			unlocked(){return hasUpgrade("AP",16)}
+		},
+		22:{
+			title:"中枢系统",
+			description:"解锁 C 层",
+			tooltip:"AP22",
+			cost()
+			{
+				if(player.C.points.gte(1))return new Decimal(0)
+				else return new Decimal(450)
+			},
+			unlocked(){return hasUpgrade("AP",21)}
 		}
 	},
 	branches:["A"],
@@ -438,7 +476,7 @@ addLayer("B",{
 			unlocked(){return hasUpgrade("B",11)}
 		}
 	},
-	resetNothing(){return hasMilestone("B",75)},
+	resetsNothing(){return hasMilestone("B",75)},
 	canBuyMax(){return hasMilestone("B",5)},
 	layerShown(){return hasUpgrade("A",43)||player.B.points.gte(1)},
 	tabFormat:{
@@ -477,4 +515,79 @@ addLayer("B",{
 			"upgrades"]
 		}
 	}
+})
+//CMark
+addLayer("C",{
+	name:"Central",
+	symbol:"C",
+	position:1,
+	row:1,
+	startData(){return{
+		unlocked:true,
+		points:new Decimal(0),
+		}
+	},
+	branches:["AP","A"],
+	color:"#848484",
+	baseResource:"字母",
+	baseAmount(){return player.points},
+	resource:"中枢",
+	exponent:0.7,
+	type:"static",
+	requires:new Decimal(1e27),
+	gainMult()
+	{
+		let mult=new Decimal(1)
+		return mult
+	},
+	milestones:{
+		2:{
+			requirementDescription:"2 中枢",
+			effectDescription:"中枢开始对字母增益",
+			done(){return player.C.points.gte(2)}
+		},
+		5:{
+			requirementDescription:"5 中枢",
+			effectDescription:"可最大购买中枢",
+			done(){return player.C.points.gte(5)}
+		},
+		75:{
+			requirementDescription:"75 中枢",
+			effectDescription:"Alpha 更便宜，自动购买 Alpha 升级项",
+			done(){return player.C.points.gte(75)}
+		},
+		125:{
+			requirementDescription:"120 中枢",
+			effectDescription:"字母增益 ^1.25",
+			done(){return player.C.points.gte(125)}
+		},
+		150:{
+			requirementDescription:"150 中枢",
+			effectDescription:"中枢不重置任何东西",
+			done(){return player.C.points.gte(125)}
+		}
+	},
+	resetsNothing(){return hasMilestone("C",150)},
+	canBuyMax(){return hasMilestone("C",5)},
+	tabFormat:{
+		"Milestones":
+		{
+			content:[
+				"main-display",
+				"blank",
+				["prestige-button",function(){return ""}],
+				"blank",
+				"blank",
+				["display-text",
+				function()
+				{
+					if(hasMilestone("C",2))return "你有 "+player.C.points+" 中枢，字母增益 x"+format(player.C.points.mul(6).pow(0.97));
+				}
+				],
+				"blank",
+				"milestones"
+			]
+		}
+	},
+	layerShown(){return hasUpgrade("AP",22)}
 })
