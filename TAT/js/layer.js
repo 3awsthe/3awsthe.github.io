@@ -13,8 +13,7 @@ addLayer("A",{
 	baseResource:"字母",
 	baseAmount(){return player.points},
 	resource:"Alpha",
-	exponent(){if(hasMilestone("C",75))return 0.5
-	else return 0.6},
+	exponent:0.6,
 	type:"normal",
 	requires:new Decimal(5),
 	gainMult()
@@ -260,7 +259,7 @@ addLayer("A",{
 			name:"无法想象失去升级的痛苦 III",
 			tooltip:"AC21",
 			challengeDescription:"所有膨胀、超级膨胀、回收机、更强改善将失效",
-			rewardDescription:"字母增益 ^1.25",
+			rewardDescription:"A、B、AC 层字母增益 ^1.25",
 			canComplete(){return player.points.gte(2e11)},
 			goalDescription:"2e11 字母",
 			unlocked(){return ((hasUpgrade("A",26)&&hasMilestone("B",2))||hasMilestone("B",20))&&hasChallenge("A",12)}
@@ -268,7 +267,7 @@ addLayer("A",{
 		22:{
 			name:"丢掉一切，做回自己",
 			tooltip:"AC22",
-			challengeDescription:"所有升级失效",
+			challengeDescription:"A、B、AC 层所有升级失效",
 			rewardDescription:"字母增益 ^1.25",
 			canComplete(){return player.points.gte(1e11)},
 			goalDescription:"1e11 字母",
@@ -388,6 +387,17 @@ addLayer("AP",{
 				else return new Decimal(450)
 			},
 			unlocked(){return hasUpgrade("AP",21)}
+		},
+		23:{
+			title:"伽马射线",
+			description:"解锁 G 层",
+			tooltip:"AP23",
+			cost()
+			{
+				if(player.G.points.gte(1))return new Decimal(0)
+				else return new Decimal(1300)
+			},
+			unlocked(){return hasUpgrade("AP",22)}
 		}
 	},
 	branches:["A"],
@@ -460,6 +470,11 @@ addLayer("B",{
 			requirementDescription:"75 Beta",
 			effectDescription:"Beta 不重置任何东西",
 			done(){return player.B.points.gte(75)}
+		},
+		500:{
+			requirementDescription:"500 Beta",
+			effectDescription:"自动重置 Beta",
+			done(){return player.B.points.gte(500)}
 		}
 	},
 	upgrades:{
@@ -476,6 +491,7 @@ addLayer("B",{
 			unlocked(){return hasUpgrade("B",11)}
 		}
 	},
+	autoPrestige(){return hasMilestone("B",500)},
 	resetsNothing(){return hasMilestone("B",75)},
 	canBuyMax(){return hasMilestone("B",5)},
 	layerShown(){return hasUpgrade("A",43)||player.B.points.gte(1)},
@@ -551,9 +567,14 @@ addLayer("C",{
 			effectDescription:"可最大购买中枢",
 			done(){return player.C.points.gte(5)}
 		},
+		30:{
+			requirementDescription:"30 中枢",
+			effectDescription:"增强中枢对字母增益的效果",
+			done(){return player.C.points.gte(30)}
+		},
 		75:{
 			requirementDescription:"75 中枢",
-			effectDescription:"Alpha 更便宜，自动购买 Alpha 升级项",
+			effectDescription:"自动购买 Alpha 升级项",
 			done(){return player.C.points.gte(75)}
 		},
 		125:{
@@ -581,7 +602,8 @@ addLayer("C",{
 				["display-text",
 				function()
 				{
-					if(hasMilestone("C",2))return "你有 "+player.C.points+" 中枢，字母增益 x"+format(player.C.points.mul(6).pow(0.97));
+					if(hasMilestone("C",30))return "你有 "+player.C.points+" 中枢，字母增益 x"+format(player.C.points.mul(10).pow(0.97))
+					else if(hasMilestone("C",2))return "你有 "+player.C.points+" 中枢，字母增益 x"+format(player.C.points.mul(6).pow(0.97))
 				}
 				],
 				"blank",
@@ -590,4 +612,50 @@ addLayer("C",{
 		}
 	},
 	layerShown(){return hasUpgrade("AP",22)}
+})
+addLayer("G",{
+	name:"Gamma",
+	symbol:"G",
+	position:0,
+	row:2,
+	startData(){return{
+		unlocked:true,
+		points:new Decimal(0),
+		}
+	},
+	branches:["C","B"],
+	color:"#8e2db4",
+	baseResource:"字母",
+	baseAmount(){return player.points},
+	resource:"Gamma",
+	exponent:0.6,
+	type:"normal",
+	requires:new Decimal(1e51),
+	gainMult()
+	{
+		let mult=new Decimal(1)
+		return mult
+	},
+	infoboxes:{
+		1:{
+		body()
+		{return "失去一切的目的是为了得到更多，不是吗。<br>所有的字母一瞬间从 Gamma 中逝去，永远的逝去。<br>你尝试挽回它。<br>你失败了。<br>"}}
+	},
+	upgrades:{
+		11:{
+			title:"见面礼 I",
+			description:"字母增益 ^1.11",
+			cost:new Decimal(5)
+		},
+		12:{
+			title:"见面礼 II",
+			description:"字母增益 x1.5",
+			cost:new Decimal(15)
+		},
+		13:{
+			title:"见面礼 III",
+			description:"字母增益 x3",
+			cost:new Decimal(30)
+		},
+	}
 })

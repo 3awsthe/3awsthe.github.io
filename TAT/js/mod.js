@@ -75,8 +75,12 @@ function getPointGen() {
 	if(player.B.points.gte(1))gain=gain.mul(player.B.points.mul(3).pow(0.99))
 	if(hasChallenge("A",21))gain=gain.pow(1.25)
 	if(hasChallenge("A",22))gain=gain.pow(1.25)
-	if(hasMilestone("C",2)){gain=gain.mul(player.C.points.mul(6).pow(0.97));}
+	if(hasMilestone("C",30))gain=gain.mul(player.C.points.mul(10).pow(0.98))
+	else if(hasMilestone("C",2))gain=gain.mul(player.C.points.mul(6).pow(0.97))
 	if(hasMilestone("C",125))gain=gain.pow(1.25)
+	if(hasUpgrade("G",11)){gain=gain.pow(1.11);}
+	if(hasUpgrade("G",12))gain=gain.mul(1.5);
+	if(hasUpgrade("G",13))gain=gain.mul(3);
 	return gain
 }
 
